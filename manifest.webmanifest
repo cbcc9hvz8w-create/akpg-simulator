@@ -1,7 +1,7 @@
 {
-  "name": "Anki Sprint Next — 実験版",
-  "short_name": "Sprint Next",
-  "description": "Anki .apkgをiPad内だけで高速演習するオフライン学習プレイヤー",
+  "name": "APKG Simulator",
+  "short_name": "APKG Simulator",
+  "description": "Ankiの.apkgをiPad内だけで高速演習するオフライン学習プレイヤー",
   "id": "./",
   "start_url": "./",
   "scope": "./",

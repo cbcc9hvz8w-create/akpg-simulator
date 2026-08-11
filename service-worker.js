@@ -1,10 +1,11 @@
-const APP_VERSION = "v10.1"; // build:version
-const CACHE_PREFIX = "anki-sprint-shell-";
+const APP_VERSION = "v1.3"; // build:version
+// Keep this cache namespace separate from the preserved Anki Sprint v9.13 PWA.
+const CACHE_PREFIX = "apkg-simulator-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${APP_VERSION}`;
 const PRECACHE = [
   "./.nojekyll",
-  "./assets/index-C9km92kF.css",
-  "./assets/index-FE_3D_eg.js",
+  "./assets/index-CbJnkE6x.js",
+  "./assets/index-aV22hn4l.css",
   "./assets/sql-wasm-UFUCzYNW.wasm",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
@@ -35,7 +36,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys()
       .then((keys) => Promise.all(keys.filter((key) => (
-        (key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME) || /^anki-sprint-v\d+$/.test(key)
+        key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME
       )).map((key) => caches.delete(key))))
       .then(() => self.clients.claim()),
   );
