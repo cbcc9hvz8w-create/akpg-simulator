@@ -1,11 +1,11 @@
-const APP_VERSION = "v1.4"; // build:version
+const APP_VERSION = "v1.5"; // build:version
 // Keep this cache namespace separate from the preserved Anki Sprint v9.13 PWA.
 const CACHE_PREFIX = "apkg-simulator-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${APP_VERSION}`;
 const PRECACHE = [
   "./.nojekyll",
-  "./assets/index-aV22hn4l.css",
-  "./assets/index-kkQHi_su.js",
+  "./assets/index-BVBf79VA.css",
+  "./assets/index-CHzFYvgW.js",
   "./assets/sql-wasm-UFUCzYNW.wasm",
   "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
