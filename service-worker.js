@@ -1,4 +1,4 @@
-const APP_VERSION = "v3.1.1"; // build:version
+const APP_VERSION = "v3.1.2"; // build:version
 // Keep this cache namespace separate from the preserved Anki Sprint v9.13 PWA.
 const CACHE_PREFIX = "apkg-simulator-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${APP_VERSION}`;
