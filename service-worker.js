@@ -1,4 +1,4 @@
-const APP_VERSION = "v3.4.57"; // build:version
+const APP_VERSION = "v3.4.60"; // build:version
 // Keep this cache namespace separate from the preserved Anki Sprint v9.13 PWA.
 const CACHE_PREFIX = "apkg-simulator-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${APP_VERSION}`;
@@ -6,8 +6,8 @@ const PRECACHE = [
   "./.nojekyll",
   "./assets/apple-touch-icon-C3GtdD9x.png",
   "./assets/icon-gTp1paoi.svg",
-  "./assets/index-DWwpwEMX.js",
-  "./assets/index-Dc7dj_Pt.css",
+  "./assets/index-D52f1Njx.js",
+  "./assets/index-sm1SJpYD.css",
   "./assets/manifest-IbKlyEAR.webmanifest",
   "./assets/sql-wasm-UFUCzYNW.wasm",
   "./icons/apple-touch-icon.png",
@@ -73,7 +73,9 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(new Response("External requests are disabled", { status: 403 }));
     return;
   }
-  if (request.mode === "navigate" || url.pathname.endsWith("/index.html")) {
+  // Never answer update checks with the previous release from this worker's
+  // cache. Page-level cache: "no-store" does not bypass a controlling worker.
+  if (request.mode === "navigate" || url.pathname.endsWith("/index.html") || url.pathname.endsWith("/service-worker.js")) {
     event.respondWith(networkFirst(request));
     return;
   }
