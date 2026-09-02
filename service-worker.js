@@ -1,4 +1,4 @@
-const APP_VERSION = "v3.4.70"; // build:version
+const APP_VERSION = "v3.4.126"; // build:version
 // Keep this cache namespace separate from the preserved Anki Sprint v9.13 PWA.
 const CACHE_PREFIX = "apkg-simulator-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}${APP_VERSION}`;
@@ -6,8 +6,8 @@ const PRECACHE = [
   "./.nojekyll",
   "./assets/apple-touch-icon-C3GtdD9x.png",
   "./assets/icon-gTp1paoi.svg",
-  "./assets/index-DrDIHmPk.js",
-  "./assets/index-Ib7z1TTg.css",
+  "./assets/index-CDh9YpbE.js",
+  "./assets/index-_3sl1JXu.css",
   "./assets/manifest-IbKlyEAR.webmanifest",
   "./assets/sql-wasm-UFUCzYNW.wasm",
   "./icons/apple-touch-icon.png",
@@ -45,23 +45,23 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-async function networkFirst(request) {
+async function networkFirst(request, cacheResponse = true) {
   const cache = await caches.open(CACHE_NAME);
   try {
     const response = await fetch(request, { cache: "no-store" });
-    if (response.ok) await cache.put(request, response.clone());
+    if (cacheResponse && response.ok) await cache.put(request, response.clone());
     return response;
   } catch {
     return (await cache.match(request)) ?? (await cache.match("./index.html")) ?? Response.error();
   }
 }
 
-async function cacheFirst(request) {
+async function cacheFirst(request, cacheResponse = true) {
   const cache = await caches.open(CACHE_NAME);
   const cached = await cache.match(request);
   if (cached) return cached;
   const response = await fetch(request);
-  if (response.ok) await cache.put(request, response.clone());
+  if (cacheResponse && response.ok) await cache.put(request, response.clone());
   return response;
 }
 
@@ -73,11 +73,13 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(new Response("External requests are disabled", { status: 403 }));
     return;
   }
-  // Never answer update checks with the previous release from this worker's
-  // cache. Page-level cache: "no-store" does not bypass a controlling worker.
-  if (request.mode === "navigate" || url.pathname.endsWith("/index.html") || url.pathname.endsWith("/service-worker.js")) {
-    event.respondWith(networkFirst(request));
+  // The app fetches this file with a cache-busting query to check GitHub Pages.
+  // It must be network-first and must not create a new Cache entry each time.
+  const isServiceWorkerRequest = url.pathname.endsWith("/service-worker.js");
+  if (request.mode === "navigate" || url.pathname.endsWith("/index.html") || isServiceWorkerRequest) {
+    event.respondWith(networkFirst(request, !isServiceWorkerRequest));
     return;
   }
-  event.respondWith(cacheFirst(request).catch(() => Response.error()));
+  // Each query string is its own Cache key. Cache only canonical local assets.
+  event.respondWith(cacheFirst(request, !url.search).catch(() => Response.error()));
 });
