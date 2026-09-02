@@ -1,0 +1,3 @@
+APKG Simulator 最新版
+バージョン: v3.4.132
+この VERSION.txt と service-worker.js の版が一致することを確認してください。
